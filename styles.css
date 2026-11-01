@@ -651,9 +651,14 @@ p.sub, .sec-sub {
   height: 112px;
   z-index: 45;
   pointer-events: none;
-  will-change: transform;
+  will-change: transform, opacity;
   filter: drop-shadow(0 8px 16px rgba(35, 35, 38, 0.28));
-  transition: opacity 0.3s ease;
+  transition: opacity 0.45s var(--ease);
+}
+
+#wand.vanished {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 #wand.pulse .tip {
@@ -2254,32 +2259,59 @@ p.sub, .sec-sub {
   100% { top: 100%; opacity: 1; }
 }
 
+.sim-instruction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 14px 6px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8A6621;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.sim-instruction-icon {
+  color: #D4AF37;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
 .opts {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  margin: 16px 4px 14px;
+  margin: 6px 4px 16px;
 }
 
 .opts button {
-  padding: 9px 16px;
+  padding: 10px 18px;
   border-radius: var(--r-pill);
-  border: 1px solid var(--gold);
-  background: none;
-  font: 400 13.5px 'Jost', sans-serif;
-  color: var(--ink);
+  border: 1.5px solid #C59B4E;
+  background: linear-gradient(110deg, #F0DFAE 0%, #C9A25A 45%, #F7E8BC 65%, #B88A28 100%);
+  background-size: 220% 100%;
+  font: 500 13.5px 'Jost', sans-serif;
+  color: #1F1F22;
   cursor: pointer;
-  transition: all .25s var(--ease);
+  box-shadow: 0 4px 14px rgba(184, 146, 74, 0.28);
+  transition: background-position .5s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
 }
 
 .opts button:hover {
-  background: rgba(184, 146, 74, 0.1);
+  background-position: 100% 0;
+  transform: translateY(-2px);
+  border-color: #B38728;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
 }
 
 .opts button.on {
-  background: var(--gold);
+  background: linear-gradient(135deg, #9A7223 0%, #D4AF37 50%, #7D5A16 100%);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(184, 146, 74, 0.3);
+  border-color: #FFF2A6;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55), inset 0 0 0 1px rgba(255, 248, 214, 0.4);
+  transform: translateY(-1px);
 }
 
 .slider-wrap {

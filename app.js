@@ -297,6 +297,7 @@ function initGoldenWandAndTransformation() {
   };
 
   let hasTriggered = false;
+  let vanishTimer = null;
 
   function updateWand() {
     const a = center(anchor);
@@ -312,7 +313,7 @@ function initGoldenWandAndTransformation() {
     const rot = (1 - e) * 14;
 
     wand.style.transform = `translate3d(${curX}px, ${curY}px, 0) rotate(${rot}deg)`;
-    wand.classList.toggle('pulse', p > 0.9 && p < 1);
+    wand.classList.toggle('pulse', p > 0.88 && p < 1);
 
     const on = mag.classList.contains('on');
     if (p >= 0.96 && !on) {
@@ -322,18 +323,20 @@ function initGoldenWandAndTransformation() {
         triggerGoldParticles();
         hasTriggered = true;
       }
+      if (vanishTimer) clearTimeout(vanishTimer);
+      vanishTimer = setTimeout(() => {
+        if (mag.classList.contains('on')) {
+          wand.classList.add('vanished');
+        }
+      }, 320);
     } else if (p < 0.78 && on) {
       mag.classList.remove('on');
       if (magTag) magTag.textContent = 'Antes';
       hasTriggered = false;
-    }
-
-    // Hide wand smoothly if user scrolls far past the transformation section
-    const pastSection = b.y + window.innerHeight * 0.8;
-    if (window.scrollY > pastSection) {
-      wand.style.opacity = '0';
-    } else {
-      wand.style.opacity = '1';
+      if (vanishTimer) clearTimeout(vanishTimer);
+      wand.classList.remove('vanished');
+    } else if (p < 0.92 && !on) {
+      wand.classList.remove('vanished');
     }
   }
 
