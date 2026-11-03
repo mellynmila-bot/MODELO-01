@@ -602,12 +602,27 @@ function initGalleryAndLightbox() {
     });
   });
 
-  if (lbClose) lbClose.addEventListener('click', closeLightbox);
-  if (lbNext) lbNext.addEventListener('click', showNext);
-  if (lbPrev) lbPrev.addEventListener('click', showPrev);
+  if (lbClose) {
+    lbClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+  if (lbNext) {
+    lbNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showNext();
+    });
+  }
+  if (lbPrev) {
+    lbPrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPrev();
+    });
+  }
 
   lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
+    if (e.target === lightbox || e.target.classList.contains('lightbox-content')) closeLightbox();
   });
 
   window.addEventListener('keydown', (e) => {
@@ -617,13 +632,16 @@ function initGalleryAndLightbox() {
     if (e.key === 'ArrowLeft') showPrev();
   });
 
-  // Touch Swipe for Mobile
+  // Touch Swipe for Mobile (ignoring taps directly on prev/next/close buttons)
   let touchStartX = 0;
+  let touchOnButton = false;
   lightbox.addEventListener('touchstart', (e) => {
+    touchOnButton = Boolean(e.target.closest('.lightbox-btn, .lightbox-close'));
     touchStartX = e.changedTouches[0].screenX;
   }, { passive: true });
 
   lightbox.addEventListener('touchend', (e) => {
+    if (touchOnButton) return;
     const touchEndX = e.changedTouches[0].screenX;
     if (touchEndX < touchStartX - 45) showNext();
     if (touchEndX > touchStartX + 45) showPrev();
