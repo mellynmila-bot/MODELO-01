@@ -389,31 +389,12 @@ function triggerGoldParticles() {
  */
 function initOrbitalRing() {
   const orb = document.getElementById('orb');
-  const glow = document.getElementById('glow');
-  const magTag = document.getElementById('magTag');
   if (!orb || !SITE.servicos) return;
 
-  const chips = SITE.servicos.map((s, index) => {
-    const c = document.createElement('button');
-    c.type = 'button';
+  const chips = SITE.servicos.map((s) => {
+    const c = document.createElement('span');
     c.className = 'chip';
     c.textContent = s.rotulo;
-    c.setAttribute('aria-label', `Ver foco de ${s.nome}`);
-
-    c.onclick = () => {
-      chips.forEach(x => x.classList.remove('on'));
-      c.classList.add('on');
-
-      if (glow) {
-        glow.style.left = s.foco[0] + '%';
-        glow.style.top = s.foco[1] + '%';
-        glow.classList.remove('p');
-        void glow.offsetWidth; // trigger reflow
-        glow.classList.add('p');
-      }
-
-      if (magTag) magTag.textContent = s.nome;
-    };
 
     orb.appendChild(c);
     return c;

@@ -214,7 +214,7 @@
       <div class="sec-container">
         <div class="sec-head">
           <h2 id="servicosTitle">Cada rosto pede um cuidado diferente</h2>
-          <p class="sec-sub">Toque em um ponto e veja onde a técnica certa atua no seu rosto.</p>
+          <p class="sec-sub">Técnicas precisas e personalizadas para valorizar seus traços com leveza, equilíbrio e máxima naturalidade.</p>
         </div>
 
         <!-- Orbital Stage (Inspired by Overlay) -->
@@ -887,40 +887,62 @@
           `M${x} ${y - r * 1.9 * s}C${x + r * 0.15} ${y - r * s} ${x + r} ${y - r * 0.5} ${x + r} ${y}A${r} ${r} 0 0 1 ${x - r} ${y}C${x - r} ${y - r * 0.5} ${x - r * 0.15} ${y - r * s} ${x} ${y - r * 1.9 * s}Z`;
 
         function tick() {
+          const isMobile = window.innerWidth <= 820;
           const r = c2.getBoundingClientRect();
-          const vh = stg.offsetHeight || window.innerHeight;
-          const a = cl(1 - r.top / window.innerHeight); // aproximação da divisão
-          const p = still ? 1 : cl(-r.top / Math.max(1, r.height - vh)); // progresso dentro da sessão fixa
+          let a = 0;
+          let p = 0;
 
-          // Garante fixação do palco mesmo quando html/body possuem overflow-x: hidden
-          if (r.top <= 0 && r.bottom >= vh) {
-            stg.style.position = 'fixed';
-            stg.style.top = '0px';
-            stg.style.bottom = 'auto';
-            stg.style.left = '0px';
-            stg.style.width = '100%';
-          } else if (r.bottom < vh) {
-            stg.style.position = 'absolute';
+          if (isMobile) {
+            // No mobile: fluxo 100% natural da página (sem travar/fixar a tela e sem precisar rolar trilha extra)
+            stg.style.position = 'relative';
             stg.style.top = 'auto';
-            stg.style.bottom = '0px';
-            stg.style.left = '0px';
-            stg.style.width = '100%';
-          } else {
-            stg.style.position = 'sticky';
-            stg.style.top = '0px';
             stg.style.bottom = 'auto';
-            stg.style.left = '0px';
+            stg.style.left = 'auto';
             stg.style.width = '100%';
+
+            const cbNow = circ.getBoundingClientRect();
+            const vh = window.innerHeight || 1;
+            const startY = vh * 0.80;
+            const endY = vh * 0.24;
+            a = cl((vh * 1.05 - cbNow.top) / (vh * 0.25));
+            p = still ? 1 : cl((startY - cbNow.top) / Math.max(1, startY - endY));
+          } else {
+            // No desktop: palco fixado durante a rolagem da seção
+            const vh = stg.offsetHeight || window.innerHeight;
+            a = cl(1 - r.top / window.innerHeight);
+            p = still ? 1 : cl(-r.top / Math.max(1, r.height - vh));
+
+            if (r.top <= 0 && r.bottom >= vh) {
+              stg.style.position = 'fixed';
+              stg.style.top = '0px';
+              stg.style.bottom = 'auto';
+              stg.style.left = '0px';
+              stg.style.width = '100%';
+            } else if (r.bottom < vh) {
+              stg.style.position = 'absolute';
+              stg.style.top = 'auto';
+              stg.style.bottom = '0px';
+              stg.style.left = '0px';
+              stg.style.width = '100%';
+            } else {
+              stg.style.position = 'sticky';
+              stg.style.top = '0px';
+              stg.style.bottom = 'auto';
+              stg.style.left = '0px';
+              stg.style.width = '100%';
+            }
           }
 
           const s = stg.getBoundingClientRect();
           const cb = circ.getBoundingClientRect();
           const ix = cb.left - s.left + IX * cb.width;
           const iy = cb.top - s.top + IY * cb.height;
+          const sc = isMobile ? 0.65 : 1;
+          const rSc = isMobile ? 0.78 : 1;
 
           let L = 0,
-            nw = 15,
-            bw = 9;
+            nw = 15 * rSc,
+            bw = 9 * rSc;
 
           if (still) {
             hang.setAttribute('d', '');
@@ -929,19 +951,19 @@
           } else {
             if (p <= 0) {
               const k = ez(cl((a - 0.45) / 0.55));
-              L = 8 + k * 97;
-              bw = 8 + k * 18;
-              nw = 15 - k * 3;
+              L = (8 + k * 97) * sc;
+              bw = (8 + k * 18) * rSc;
+              nw = (15 - k * 3) * rSc;
             } else if (p < 0.1) {
               const k = p / 0.1;
-              L = 105 + k * 30;
-              bw = 26 + k * 6;
-              nw = 12 - k * 9;
+              L = (105 + k * 30) * sc;
+              bw = (26 + k * 6) * rSc;
+              nw = (12 - k * 9) * rSc;
             } else {
               const k = ez(cl((p - 0.1) / 0.05));
-              L = (1 - k) * 40;
-              bw = 7;
-              nw = 7 * (1 - k) + 2;
+              L = (1 - k) * 40 * sc;
+              bw = 7 * rSc;
+              nw = (7 * (1 - k) + 2) * rSc;
             }
             hang.setAttribute('d', hangPath(ix, L, nw, bw));
 
@@ -950,9 +972,9 @@
               fs = 1;
             if (p >= 0.1 && p < 0.43) {
               const k = cl((p - 0.1) / 0.3);
-              const y0 = 104;
+              const y0 = 104 * sc;
               fy = y0 + (iy - y0) * k * k;
-              fr = 32 * (1 - 0.1 * k);
+              fr = 32 * rSc * (1 - 0.1 * k);
               fs = 1 + 0.55 * k;
               if (p >= 0.4) fr *= 1 - (p - 0.4) / 0.03;
             }
@@ -984,7 +1006,7 @@
             o.d.style.transform = `translate(${ix + Math.cos(o.a) * o.v * t * 1.4}px, ${iy - Math.sin(o.a) * o.v * t * 1.5 + t * t * 70}px)`;
           });
 
-          // Transformação em círculo a partir do impacto (conclui próximo ao fim da rolagem para não deixar espaço morto)
+          // Transformação em círculo a partir do impacto
           const R = Math.hypot(cb.width, cb.height);
           const rk = still ? 1 : ez(cl((p - 0.4) / 0.55));
           yc.style.clipPath = `circle(${rk * R}px at ${IX * 100}% ${IY * 100}%)`;
