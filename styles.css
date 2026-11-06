@@ -1323,20 +1323,20 @@ p.sub, .sec-sub {
 .gal figure {
   margin: 0;
   border-radius: 0; /* Borda quadrada */
-  border: 3px solid #D4AF37; /* Dourado vivo metálico 24k */
+  border: 1.5px solid #D4AF37; /* Dourado vivo metálico 24k mais fino */
   border-image: linear-gradient(135deg, #B38728 0%, #FCF6BA 25%, #D4AF37 50%, #FBF5B7 75%, #9A6F1A 100%) 1;
   overflow: hidden;
   position: relative;
   background-color: #EFEFEF;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
   height: 270px;
 }
 
 .gal figure:hover {
   border-image: linear-gradient(135deg, #D4AF37 0%, #FFF8CC 35%, #E5C158 65%, #B38728 100%) 1;
-  box-shadow: 0 14px 36px rgba(212, 175, 55, 0.45);
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.38);
 }
 
 .gal img {
@@ -1493,14 +1493,6 @@ p.sub, .sec-sub {
   position: relative;
   justify-self: center;
   width: min(100%, 380px);
-  animation: sobrePhotoFloat 5s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes sobrePhotoFloat {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-14px); }
-  100% { transform: translateY(0px); }
 }
 
 .sobre-floating-cards {
@@ -1526,7 +1518,6 @@ p.sub, .sec-sub {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.95);
   white-space: nowrap;
-  animation: floatCardPill 4s ease-in-out infinite alternate;
 }
 
 .sobre-card-pill:nth-child(1) {
@@ -1702,14 +1693,65 @@ p.sub, .sec-sub {
 }
 
 .reel-card {
-  max-width: 360px;
+  max-width: 380px;
   width: 100%;
   margin: 0 auto 36px;
   border-radius: var(--r-lg);
-  padding: 12px;
+  padding: 14px;
   border: 1px solid rgba(184, 146, 74, 0.4);
   box-shadow: var(--shadow);
   position: relative;
+}
+
+.reel-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(35, 35, 38, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid var(--gold);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 6;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.reel-play-btn.playing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reel-card:hover .reel-play-btn.playing {
+  opacity: 0.65;
+  pointer-events: auto;
+}
+
+.reel-tab-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all .2s var(--ease);
+}
+
+.reel-tab-btn:hover,
+.reel-tab-btn.active {
+  background: linear-gradient(135deg, #DFB76C 0%, #C59B4E 50%, #B8924A 100%);
+  color: #FFFFFF;
+  border-color: #B8924A;
+  box-shadow: 0 4px 12px rgba(184, 146, 74, 0.35);
 }
 
 .reel-phone {
@@ -1968,19 +2010,20 @@ p.sub, .sec-sub {
   flex: 0 0 340px;
   height: 250px;
   border-radius: 0 !important; /* BORDA QUADRADA */
-  border: 2px solid var(--gold) !important; /* BORDA DOURADA */
+  border: 2px solid #D4AF37 !important; /* BORDA DOURADA COM EFEITO METÁLICO */
+  border-image: linear-gradient(135deg, #B38728 0%, #FCF6BA 25%, #D4AF37 50%, #FBF5B7 75%, #9A6F1A 100%) 1 !important;
   overflow: hidden;
   position: relative;
   background-color: #232326;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(184, 146, 74, 0.2);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.28), inset 0 0 12px rgba(212, 175, 55, 0.15);
   transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
 }
 
 .estudio-card:hover {
   transform: translateY(-4px) scale(1.02);
-  border-color: #E8D3A0 !important;
-  box-shadow: 0 12px 32px rgba(184, 146, 74, 0.4);
+  border-image: linear-gradient(135deg, #D4AF37 0%, #FFF8CC 35%, #E5C158 65%, #B38728 100%) 1 !important;
+  box-shadow: 0 14px 36px rgba(212, 175, 55, 0.5), inset 0 0 16px rgba(255, 248, 220, 0.25);
 }
 
 .estudio-card img {
@@ -2558,11 +2601,12 @@ input[type=range] {
    ========================================================================== */
 
 .footer {
-  background-color: var(--graphite);
+  background-color: #1E1E22;
   color: #D2D0C8;
-  padding: 90px 24px 40px;
+  padding: 72px 24px 36px;
   position: relative;
   z-index: 20;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .footer-in {
@@ -2572,51 +2616,55 @@ input[type=range] {
 
 .footer-top {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  grid-template-columns: 1.5fr 1fr 1.2fr;
+  gap: 52px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-brand h3 {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 32px;
+  font-size: 28px;
   color: var(--gold-2);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .footer-reg {
-  font-size: 13.5px;
-  color: #A3A199;
-  letter-spacing: 0.05em;
-  margin-bottom: 18px;
+  font-size: 13px;
+  color: #8E8C85;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
 }
 
 .footer-desc {
-  font-size: 14.5px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.65;
   max-width: 38ch;
-  color: #A3A199;
+  color: #9C9A93;
 }
 
 .footer-col h4 {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 20px;
-  color: #FFFFFF;
-  margin-bottom: 18px;
+  font-size: 19px;
+  color: #F5E8C7;
+  margin-bottom: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .footer-col ul {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
 }
 
 .footer-col a {
   text-decoration: none;
-  color: #A3A199;
-  font-size: 14px;
+  color: #9C9A93;
+  font-size: 13.5px;
   transition: color .2s var(--ease);
 }
 
@@ -2625,26 +2673,27 @@ input[type=range] {
 }
 
 .footer-contact-item {
-  font-size: 14px;
-  color: #A3A199;
+  font-size: 13.5px;
+  color: #9C9A93;
   line-height: 1.6;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .footer-bottom {
-  padding-top: 36px;
+  padding-top: 28px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  font-size: 13px;
-  color: #8A8880;
+  font-size: 12.5px;
+  color: #787670;
 }
 
 .footer-disclaimer {
-  max-width: 60ch;
-  line-height: 1.5;
+  max-width: 65ch;
+  line-height: 1.55;
+  color: #72706A;
 }
 
 /* ==========================================================================
@@ -3344,61 +3393,134 @@ input[type=range] {
   text-shadow: 0 0 10px rgba(249, 228, 152, 0.85);
 }
 
+/* =====================================================================
+   CELULAR / TABLET EM PÉ (até 820px): sessão fixada por JavaScript.
+   Tudo escopado em #gt-sec.gt-m (a classe gt-m é colocada pelo JS).
+   O computador (acima de 820px) NÃO é afetado.
+   ===================================================================== */
 @media (max-width: 820px) {
-  /* Sessão da Gota Mobile: fluxo 100% natural, sem travar a tela e sem sobreposição */
-  .gt-sec {
-    height: auto !important;
-  }
-  .gt-stg {
+  /* trilho: dá o espaço de rolagem da animação (altura da tela x 4.2) */
+  #gt-sec.gt-m {
     position: relative !important;
-    height: auto !important;
-    min-height: 0 !important;
-    grid-template-columns: 1fr;
-    align-content: start;
-    justify-items: center;
-    padding: 48px 18px 20px;
-    gap: 12px;
-    text-align: center;
-    box-sizing: border-box;
+    display: block !important;
+    height: calc(var(--gt-vh, 100svh) * var(--gt-track, 4.2)) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: var(--gt-bg) !important;
   }
-  .gt-stg .gt-tx {
-    margin: 0 auto;
-    max-width: 100%;
+
+  /* palco: ocupa a tela inteira, tudo junto e centralizado, sem espaços soltos */
+  #gt-sec.gt-m .gt-stg {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: var(--gt-vh, 100svh) !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: calc(env(safe-area-inset-top, 0px) + 96px) 20px 24px !important;
+    overflow: hidden !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    z-index: 2;
+  }
+  /* estados da fixação (o JS troca a classe conforme a rolagem) */
+  #gt-sec.gt-m .gt-stg.gt-pin-before { position: absolute !important; top: 0 !important; bottom: auto !important; }
+  #gt-sec.gt-m .gt-stg.gt-pin-fixed  { position: fixed !important;    top: 0 !important; bottom: auto !important; }
+  #gt-sec.gt-m .gt-stg.gt-pin-sim    { position: absolute !important; top: 0 !important; bottom: auto !important; will-change: transform; }
+  #gt-sec.gt-m .gt-stg.gt-pin-after  { position: absolute !important; top: auto !important; bottom: 0 !important; }
+
+  /* círculo primeiro, com espaço livre acima para a gota cair */
+  #gt-sec.gt-m .gt-orbit {
+    order: 0 !important;
+    --O: min(74vw, 36svh) !important;
+    width: var(--O) !important;
+    margin: clamp(24px, 9svh, 80px) auto 0 !important;
+    flex: none !important;
+  }
+
+  /* título, subtítulo e botão SEMPRE juntos, logo abaixo do círculo */
+  #gt-sec.gt-m .gt-tx {
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 18px auto 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-align: center !important;
     position: relative;
     z-index: 10;
   }
-  .gt-orbit {
-    --O: min(74vw, 300px);
-    order: -1;
-    margin-bottom: 4px;
+  #gt-sec.gt-m .gt-tx h2 {
+    font-size: clamp(24px, 7vw, 30px) !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
   }
-  .gt-stg .gt-tx h2 {
-    font-size: 26px;
-    margin-bottom: 8px;
+  #gt-sec.gt-m .gt-tx .gt-sub {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    max-width: 34ch !important;
+    margin: 0 !important;
   }
-  .gt-stg .gt-tx .gt-sub {
-    font-size: 14px;
-    line-height: 1.55;
-    margin-bottom: 14px;
+  #gt-sec.gt-m .gt-tx .gt-btn {
+    padding: 13px 24px !important;
+    font-size: 13px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
-  .gt-stg .gt-tx .gt-btn-group {
-    justify-content: center;
-    gap: 10px;
-    position: relative;
-    z-index: 10;
+
+  /* botão final (conhecer profissional): aparece só no fim da animação */
+  #gt-sec.gt-m .gt-end-cta {
+    margin-top: 8px;
+    opacity: var(--gt-end, 0);
+    transform: translate3d(0, calc((1 - var(--gt-end, 0)) * 14px), 0);
+    pointer-events: none;
   }
-  .gt-stg .gt-tx .gt-btn-group .gt-btn {
-    padding: 11px 20px;
-    font-size: 13.5px;
-  }
-  .gt-sec h2 { font-size: 26px; }
-  .gt-gold-divider {
-    padding: 8px 16px 8px;
-    gap: 12px;
-  }
-  .sec-sobre {
-    padding-top: 22px !important;
-  }
+  #gt-sec.gt-m.gt-end-on .gt-end-cta { pointer-events: auto; }
+}
+
+/* celular pequeno ou com pouca altura (ex.: iPhone SE, 320x568) */
+@media (max-width: 820px) and (max-height: 700px) {
+  #gt-sec.gt-m .gt-stg { padding-top: calc(env(safe-area-inset-top, 0px) + 84px) !important; padding-bottom: 12px !important; }
+  #gt-sec.gt-m .gt-orbit { --O: min(64vw, 31svh) !important; margin-top: clamp(14px, 5svh, 40px) !important; }
+  #gt-sec.gt-m .gt-tx { margin-top: 12px !important; gap: 8px !important; }
+  #gt-sec.gt-m .gt-tx h2 { font-size: clamp(21px, 6.4vw, 26px) !important; }
+  #gt-sec.gt-m .gt-tx .gt-sub { font-size: 13px !important; line-height: 1.4 !important; }
+  #gt-sec.gt-m .gt-tx .gt-btn { padding: 11px 20px !important; }
+}
+
+/* celular deitado (tela baixa): texto à esquerda, círculo à direita */
+@media (max-width: 820px) and (max-height: 560px) and (orientation: landscape) {
+  #gt-sec.gt-m .gt-stg { flex-direction: row !important; gap: 28px !important; padding: 94px 28px 12px !important; }
+  #gt-sec.gt-m .gt-orbit { order: 1 !important; --O: min(44vw, calc(var(--gt-vh, 100svh) - 112px)) !important; margin: 0 !important; }
+  #gt-sec.gt-m .gt-tx { order: 0 !important; margin: 0 !important; align-items: flex-start !important; text-align: left !important; }
+  #gt-sec.gt-m .gt-tx h2 { font-size: clamp(20px, 3.6vw, 28px) !important; }
+}
+
+/* tablet em pé (601 a 820px): tamanhos maiores */
+@media (min-width: 601px) and (max-width: 820px) and (orientation: portrait) {
+  #gt-sec.gt-m .gt-orbit { --O: min(66vw, 38svh) !important; }
+  #gt-sec.gt-m .gt-tx { max-width: 560px !important; gap: 14px !important; }
+  #gt-sec.gt-m .gt-tx h2 { font-size: clamp(30px, 5vw, 40px) !important; }
+  #gt-sec.gt-m .gt-tx .gt-sub { font-size: 16px !important; max-width: 46ch !important; }
+  #gt-sec.gt-m .gt-tx .gt-btn { padding: 16px 32px !important; font-size: 14px !important; }
+}
+
+/* celular deitado largo (821 a 960px de largura, tela baixa): usa o layout do computador, compactado */
+@media (min-width: 821px) and (max-width: 960px) and (max-height: 560px) {
+  .gt-stg { padding: 20px 32px; gap: 24px; }
+  .gt-stg .gt-tx h2 { font-size: clamp(22px, 3.6vw, 32px); margin-bottom: 6px; }
+  .gt-stg .gt-tx .gt-sub { font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+  .gt-stg .gt-tx .gt-btn-group .gt-btn { padding: 10px 18px; font-size: 13px; }
+  .gt-orbit { --O: min(46vw, 78svh); }
 }
 
 @media (prefers-reduced-motion: reduce) {

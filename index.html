@@ -20,6 +20,11 @@
   <meta name="twitter:description" content="Site modelo premium de harmonização facial com simulação estética ilustrativa, varinha interativa e agendamento via WhatsApp." />
   <meta name="twitter:image" content="/img/doutora.svg" />
 
+  <!-- Preload Critical Images -->
+  <link rel="preload" href="/img/doutora.webp" as="image" type="image/webp" fetchpriority="high" />
+  <link rel="preload" href="https://i.ibb.co/B5PTzsq1/Aging-woman-face-skin-e9ad43f7-2-K.webp" as="image" type="image/webp" />
+  <link rel="preload" href="https://i.ibb.co/SDmHnbKk/Remove-text-from-photo-b5df5806-2-K.webp" as="image" type="image/webp" />
+
   <!-- Google Fonts: Cormorant Garamond, Jost, Great Vibes, Pinyon Script & Playfair Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -242,7 +247,16 @@
           <!-- Populated dynamically via config.js -->
         </div>
 
-        <div class="svc-actions">
+        <div class="svc-notice-box" style="text-align: center; margin-top: 36px; margin-bottom: 8px;">
+          <p style="font-size: 15px; font-weight: 500; color: var(--gold-3); letter-spacing: 0.02em;">
+            ✦ Cada face possui uma anatomia singular: existem diversas outras técnicas e combinações personalizadas para o seu plano ideal.
+          </p>
+          <div style="font-size: 20px; color: var(--gold); margin-top: 4px; animation: bounceArrow 1.8s infinite ease-in-out;">
+            ↓
+          </div>
+        </div>
+
+        <div class="svc-actions" style="margin-top: 8px;">
           <a href="https://wa.me/5571999999999?text=Ol%C3%A1!%20Gostaria%20de%20conhecer%20os%20demais%20servi%C3%A7os" target="_blank" rel="noopener noreferrer" class="btn btn--ghost magnetic-btn">
             Conhecer mais serviços
           </a>
@@ -258,7 +272,7 @@
       <div class="sec-container">
         <div class="sec-head">
           <h2 id="galeriaTitle">O cuidado, em cada detalhe</h2>
-          <p class="sec-sub">Rostos reais, resultados naturais, sempre com autorização das pacientes.</p>
+          <p class="sec-sub">Transformações reais guiadas pelo equilíbrio, elegância e máxima harmonia facial.</p>
         </div>
 
         <div class="gal" id="galMosaic" role="region" aria-label="Mosaico de resultados">
@@ -289,10 +303,7 @@
         <div class="gt-tx">
           <h2 id="gt-titulo">Harmonia que respeita <span class="gt-au">quem você é.</span></h2>
           <p class="gt-sub" id="gt-subtitulo">Cada região do rosto pede uma técnica. O seu plano é feito sob medida, com olhar artístico e resultado natural.</p>
-          <div class="gt-btn-group">
-            <a class="gt-btn" href="#servicos">Ver serviços</a>
-            <a class="gt-btn gt-o" href="#agendar">Agendar avaliação</a>
-          </div>
+          <a class="gt-btn gt-end-cta" href="#sobre">CONHECER PROFISSIONAL POR TRÁS</a>
         </div>
 
         <div class="gt-orbit" id="gt-orbit">
@@ -423,34 +434,50 @@
           <p class="sec-sub">Bastidores, cuidados e resultados reais, sem sair daqui.</p>
         </div>
 
-        <div class="reel-card glass">
+        <div class="reel-card glass" id="reelContainer">
           <div class="reel-header-overlay">
             <div class="reel-user">
               <img src="/img/doutora.webp" class="reel-avatar" alt="Avatar Dra. Helena" />
               <span>@dra.helena</span>
             </div>
-            <span style="font-size: 11px; opacity: 0.85;">Reels</span>
+            <span style="font-size: 11px; opacity: 0.85; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,0.4); border: 1px solid rgba(212,175,55,0.4);">Reels Player</span>
           </div>
 
-          <div class="reel-phone">
-            <!-- Autoplay vertical video that starts when scrolled into view -->
+          <div class="reel-phone" id="reelPhone">
+            <!-- HTML5 Video element capable of playing any loaded MP4 video -->
             <video id="reelVideo" loop muted playsinline preload="metadata">
-              <source src="/img/reel.mp4" type="video/mp4" />
+              <source id="reelSource" src="https://assets.mixkit.co/videos/preview/mixkit-skin-care-beauty-routine-41221-large.mp4" type="video/mp4" />
             </video>
-            <!-- Canvas/Mock fallback when MP4 is simulated -->
-            <div id="reelFallback" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(180deg, #2A2A2E, #1F1F22); color: #FFFFFF; text-align: center; padding: 20px;">
+
+            <!-- Embedded iframe fallback/alternative for Instagram/web video urls -->
+            <iframe id="reelIframe" style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; border: 0;" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+
+            <!-- Visual fallback overlay with play trigger -->
+            <div id="reelFallback" style="display: none; position: absolute; inset: 0; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(180deg, #2A2A2E, #1F1F22); color: #FFFFFF; text-align: center; padding: 20px; z-index: 2;">
               <div style="width: 58px; height: 58px; border-radius: 50%; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </div>
               <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; color: var(--gold-2);">Bastidores da Clínica</p>
-              <p style="font-size: 12.5px; color: #A3A199; margin-top: 6px;">Toque para reproduzir no Instagram</p>
+              <p style="font-size: 12.5px; color: #A3A199; margin-top: 6px;">Toque para reproduzir o vídeo</p>
             </div>
+
+            <!-- Big Play/Pause Center Indicator -->
+            <button type="button" class="reel-play-btn" id="reelPlayBtn" aria-label="Reproduzir ou pausar vídeo">
+              <svg id="reelPlayIcon" width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+            </button>
+
+            <!-- Sound Toggle Button -->
             <button class="reel-sound-btn" id="reelSoundBtn" aria-label="Ativar ou desativar áudio">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+                <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
               </svg>
             </button>
+          </div>
+
           </div>
         </div>
 
@@ -495,11 +522,35 @@
           <p class="sec-sub">Privacidade, conforto e biossegurança em cada detalhe da sua visita.</p>
         </div>
 
+        <!-- Badge explicativo: Conheça o Espaço -->
+        <div class="estudio-section-tag" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 18px auto 20px; font-size: 13.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3);">
+          <span style="color: var(--gold);">✦</span>
+          <span>Conheça Nosso Espaço &amp; Ambientes Exclusivos</span>
+          <span style="color: var(--gold);">✦</span>
+        </div>
+
         <!-- Infinite Carousel of Studio Photos: Square Borders, Gold Borders, Click to Expand -->
         <div class="estudio-carousel-wrap" role="region" aria-label="Fotos do espaço da clínica">
           <div class="estudio-carousel-track" id="estudioCarouselTrack">
-            <!-- Populated dynamically via config.estudio.fotos -->
+            <div class="estudio-card" data-idx="0" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-1.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="1" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-2.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="2" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-3.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="3" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-4.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="0" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-1.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="1" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-2.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="2" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-3.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
+            <div class="estudio-card" data-idx="3" tabindex="0" role="button" aria-label="Espaço Dra. Helena"><img src="/img/studio-4.svg" alt="Espaço da clínica" width="600" height="450" /><span class="estudio-card-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div>
           </div>
+        </div>
+
+        <!-- Sinalização de Localização -->
+        <div class="estudio-location-tag" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 38px auto 22px;">
+          <div style="flex: 1; max-width: 120px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold));"></div>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Localização &amp; Acesso Privativo
+          </span>
+          <div style="flex: 1; max-width: 120px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent);"></div>
         </div>
 
         <div class="estudio-grid">
@@ -533,9 +584,6 @@
               <div class="estudio-links">
                 <a href="https://maps.google.com/?q=Av.+Tancredo+Neves,+2227+Salvador+BA" target="_blank" rel="noopener noreferrer" class="btn btn--sm btn--white">
                   Abrir no Google Maps
-                </a>
-                <a href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" class="btn btn--sm btn--white">
-                  Chamar Uber
                 </a>
               </div>
             </div>
@@ -832,6 +880,13 @@
         impacto: { x: 0.5, y: 0.6 }
       };
 
+      /* Ritmo da animação no CELULAR (não afeta o computador) */
+      const GOTA_MOBILE = {
+        trackVh: 4.2, /* altura da sessão em "alturas de tela": maior = animação mais lenta */
+        /* pares [progresso da rolagem, progresso da animação]: define quanto scroll cada fase ocupa */
+        ritmo: [[0, 0], [0.12, 0.10], [0.52, 0.40], [0.58, 0.43], [0.86, 0.76], [1, 1]]
+      };
+
       const $ = (s, ctx = document) => ctx.querySelector(s);
       const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
       const ez = (t) => t * t * (3 - 2 * t);
@@ -853,6 +908,50 @@
         const IX = GOTA.impacto.x;
         const IY = GOTA.impacto.y;
         const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ----- modo celular: a sessão é fixada por JavaScript (não depende de position: sticky) ----- */
+        const mq = window.matchMedia('(max-width: 820px)');
+        let vh = window.innerHeight,
+          vw = window.innerWidth,
+          simPin = false,
+          pinState = '';
+        const PINS = ['before', 'fixed', 'sim', 'after'];
+
+        const remap = (x) => {
+          const A = GOTA_MOBILE.ritmo;
+          for (let i = 1; i < A.length; i++) {
+            if (x <= A[i][0]) {
+              const [x0, y0] = A[i - 1];
+              const [x1, y1] = A[i];
+              return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+            }
+          }
+          return 1;
+        };
+
+        const setPin = (state) => {
+          if (state === pinState) return;
+          pinState = state;
+          PINS.forEach((s) => stg.classList.toggle('gt-pin-' + s, s === state));
+          if (state !== 'sim') stg.style.transform = '';
+        };
+
+        const applyLayout = () => {
+          if (mq.matches && !still) {
+            c2.classList.add('gt-m');
+            c2.style.setProperty('--gt-vh', vh + 'px');
+            c2.style.setProperty('--gt-track', GOTA_MOBILE.trackVh);
+          } else {
+            c2.classList.remove('gt-m', 'gt-end-on');
+            c2.style.removeProperty('--gt-vh');
+            c2.style.removeProperty('--gt-track');
+            c2.style.removeProperty('--gt-end');
+            PINS.forEach((s) => stg.classList.remove('gt-pin-' + s));
+            stg.style.transform = '';
+            pinState = '';
+          }
+        };
+        applyLayout();
 
         // posiciona o anel de luz e o início do reveal no ponto de impacto
         front.style.left = `${IX * 100}%`;
@@ -887,62 +986,42 @@
           `M${x} ${y - r * 1.9 * s}C${x + r * 0.15} ${y - r * s} ${x + r} ${y - r * 0.5} ${x + r} ${y}A${r} ${r} 0 0 1 ${x - r} ${y}C${x - r} ${y - r * 0.5} ${x - r * 0.15} ${y - r * s} ${x} ${y - r * 1.9 * s}Z`;
 
         function tick() {
-          const isMobile = window.innerWidth <= 820;
           const r = c2.getBoundingClientRect();
-          let a = 0;
-          let p = 0;
-
-          if (isMobile) {
-            // No mobile: fluxo 100% natural da página (sem travar/fixar a tela e sem precisar rolar trilha extra)
-            stg.style.position = 'relative';
-            stg.style.top = 'auto';
-            stg.style.bottom = 'auto';
-            stg.style.left = 'auto';
-            stg.style.width = '100%';
-
-            const cbNow = circ.getBoundingClientRect();
-            const vh = window.innerHeight || 1;
-            const startY = vh * 0.80;
-            const endY = vh * 0.24;
-            a = cl((vh * 1.05 - cbNow.top) / (vh * 0.25));
-            p = still ? 1 : cl((startY - cbNow.top) / Math.max(1, startY - endY));
-          } else {
-            // No desktop: palco fixado durante a rolagem da seção
-            const vh = stg.offsetHeight || window.innerHeight;
-            a = cl(1 - r.top / window.innerHeight);
-            p = still ? 1 : cl(-r.top / Math.max(1, r.height - vh));
-
-            if (r.top <= 0 && r.bottom >= vh) {
-              stg.style.position = 'fixed';
-              stg.style.top = '0px';
-              stg.style.bottom = 'auto';
-              stg.style.left = '0px';
-              stg.style.width = '100%';
-            } else if (r.bottom < vh) {
-              stg.style.position = 'absolute';
-              stg.style.top = 'auto';
-              stg.style.bottom = '0px';
-              stg.style.left = '0px';
-              stg.style.width = '100%';
-            } else {
-              stg.style.position = 'sticky';
-              stg.style.top = '0px';
-              stg.style.bottom = 'auto';
-              stg.style.left = '0px';
-              stg.style.width = '100%';
+          const mob = mq.matches && !still;
+          const a = cl(1 - r.top / (mob ? vh : window.innerHeight)); // aproximação da divisão
+          let p,
+            praw = 1;
+          if (still) {
+            p = 1;
+          } else if (mob) {
+            praw = cl(-r.top / (r.height - vh)); // progresso da rolagem dentro da sessão
+            p = remap(praw); // ritmo mais lento no celular
+            if (r.top > 0) setPin('before');
+            else if (r.bottom <= vh) setPin('after');
+            else {
+              setPin(simPin ? 'sim' : 'fixed');
+              // se algum elemento pai impedir o "fixed", simula a fixação com transform
+              if (!simPin && Math.abs(stg.getBoundingClientRect().top) > 2) {
+                simPin = true;
+                setPin('sim');
+              }
+              if (simPin) stg.style.transform = `translate3d(0, ${-r.top}px, 0)`;
             }
+          } else {
+            p = cl(-r.top / (r.height - window.innerHeight)); // computador: igual ao original
           }
+          const endV = still ? 1 : mob ? cl((praw - 0.86) / 0.1) : 1;
+          c2.style.setProperty('--gt-end', `${endV}`);
+          c2.classList.toggle('gt-end-on', endV > 0.6);
 
           const s = stg.getBoundingClientRect();
           const cb = circ.getBoundingClientRect();
           const ix = cb.left - s.left + IX * cb.width;
           const iy = cb.top - s.top + IY * cb.height;
-          const sc = isMobile ? 0.65 : 1;
-          const rSc = isMobile ? 0.78 : 1;
 
           let L = 0,
-            nw = 15 * rSc,
-            bw = 9 * rSc;
+            nw = 15,
+            bw = 9;
 
           if (still) {
             hang.setAttribute('d', '');
@@ -951,19 +1030,19 @@
           } else {
             if (p <= 0) {
               const k = ez(cl((a - 0.45) / 0.55));
-              L = (8 + k * 97) * sc;
-              bw = (8 + k * 18) * rSc;
-              nw = (15 - k * 3) * rSc;
+              L = 8 + k * 97;
+              bw = 8 + k * 18;
+              nw = 15 - k * 3;
             } else if (p < 0.1) {
               const k = p / 0.1;
-              L = (105 + k * 30) * sc;
-              bw = (26 + k * 6) * rSc;
-              nw = (12 - k * 9) * rSc;
+              L = 105 + k * 30;
+              bw = 26 + k * 6;
+              nw = 12 - k * 9;
             } else {
               const k = ez(cl((p - 0.1) / 0.05));
-              L = (1 - k) * 40 * sc;
-              bw = 7 * rSc;
-              nw = (7 * (1 - k) + 2) * rSc;
+              L = (1 - k) * 40;
+              bw = 7;
+              nw = 7 * (1 - k) + 2;
             }
             hang.setAttribute('d', hangPath(ix, L, nw, bw));
 
@@ -972,9 +1051,9 @@
               fs = 1;
             if (p >= 0.1 && p < 0.43) {
               const k = cl((p - 0.1) / 0.3);
-              const y0 = 104 * sc;
+              const y0 = 104;
               fy = y0 + (iy - y0) * k * k;
-              fr = 32 * rSc * (1 - 0.1 * k);
+              fr = 32 * (1 - 0.1 * k);
               fs = 1 + 0.55 * k;
               if (p >= 0.4) fr *= 1 - (p - 0.4) / 0.03;
             }
@@ -1008,7 +1087,7 @@
 
           // Transformação em círculo a partir do impacto
           const R = Math.hypot(cb.width, cb.height);
-          const rk = still ? 1 : ez(cl((p - 0.4) / 0.55));
+          const rk = still ? 1 : ez(cl((p - 0.4) / 0.36));
           yc.style.clipPath = `circle(${rk * R}px at ${IX * 100}% ${IY * 100}%)`;
 
           front.style.width = `${2 * rk * R}px`;
@@ -1018,8 +1097,21 @@
         }
 
         window.addEventListener('scroll', tick, { passive: true });
-        window.addEventListener('resize', tick);
-        window.addEventListener('load', tick);
+        window.addEventListener('resize', () => {
+          const w = window.innerWidth,
+            h = window.innerHeight;
+          // ignora pequenas mudanças de altura (barra do navegador do celular subindo/descendo)
+          if (w !== vw || Math.abs(h - vh) > 150) {
+            vw = w;
+            vh = h;
+          }
+          applyLayout();
+          tick();
+        });
+        window.addEventListener('load', () => {
+          applyLayout();
+          tick();
+        });
         tick();
       }
 

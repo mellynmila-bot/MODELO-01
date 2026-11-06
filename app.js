@@ -648,17 +648,18 @@ function initStudioCarousel() {
     return f;
   });
 
-  // Duplicate 3 times for a seamless infinite loop
-  const loopList = [...normalizedFotos, ...normalizedFotos, ...normalizedFotos];
-
-  track.innerHTML = loopList.map((item, i) => `
-    <div class="estudio-card" data-idx="${i % normalizedFotos.length}" tabindex="0" role="button" aria-label="Espaço Dra. Helena">
-      <img src="${item.src}" alt="Espaço da clínica" loading="lazy" width="600" height="450" />
-      <span class="estudio-card-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-      </span>
-    </div>
-  `).join('');
+  // Se já houver cards no HTML, reaproveita imediatamente para não haver delay
+  if (!track.children || track.children.length === 0) {
+    const loopList = [...normalizedFotos, ...normalizedFotos];
+    track.innerHTML = loopList.map((item, i) => `
+      <div class="estudio-card" data-idx="${i % normalizedFotos.length}" tabindex="0" role="button" aria-label="Espaço Dra. Helena">
+        <img src="${item.src}" alt="Espaço da clínica" width="600" height="450" />
+        <span class="estudio-card-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </span>
+      </div>
+    `).join('');
+  }
 
   track.querySelectorAll('.estudio-card').forEach(card => {
     const clickHandler = () => {
@@ -710,28 +711,105 @@ function initAboutCounters() {
  */
 function initInstagramReels() {
   const video = document.getElementById('reelVideo');
+  const source = document.getElementById('reelSource');
+  const iframe = document.getElementById('reelIframe');
+  const playBtn = document.getElementById('reelPlayBtn');
+  const playIcon = document.getElementById('reelPlayIcon');
   const soundBtn = document.getElementById('reelSoundBtn');
   const fallback = document.getElementById('reelFallback');
+  const playlist = document.getElementById('reelPlaylist');
+  const urlForm = document.getElementById('reelUrlForm');
+  const urlInput = document.getElementById('reelUrlInput');
   if (!video) return;
+
+  function updatePlayBtnState(isPlaying) {
+    if (!playBtn) return;
+    if (isPlaying) {
+      playBtn.classList.add('playing');
+      if (playIcon) playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" fill="#FFF"></rect><rect x="14" y="4" width="4" height="16" fill="#FFF"></rect>';
+    } else {
+      playBtn.classList.remove('playing');
+      if (playIcon) playIcon.innerHTML = '<polygon points="6 4 20 12 6 20 6 4" fill="#FFF"></polygon>';
+    }
+  }
+
+  function playVideoSource(src) {
+    if (iframe) iframe.style.display = 'none';
+    if (video) {
+      video.style.display = 'block';
+      if (source) source.src = src;
+      video.src = src;
+      video.load();
+      video.play().then(() => updatePlayBtnState(true)).catch(() => updatePlayBtnState(false));
+    }
+  }
+
+  function embedInstagramUrl(url) {
+    if (!url) return;
+    // Extract Reel/Post ID or format embed link
+    let embedUrl = url.trim();
+    if (embedUrl.includes('instagram.com/reel/') || embedUrl.includes('instagram.com/p/')) {
+      const match = embedUrl.match(/instagram\.com\/(?:reel|p)\/([^/?#&]+)/);
+      if (match && match[1]) {
+        embedUrl = `https://www.instagram.com/reel/${match[1]}/embed/`;
+      }
+    } else if (embedUrl.endsWith('.mp4') || embedUrl.includes('video')) {
+      playVideoSource(embedUrl);
+      return;
+    }
+
+    if (video) {
+      video.pause();
+      video.style.display = 'none';
+    }
+    if (playBtn) playBtn.classList.add('playing');
+    if (iframe) {
+      iframe.src = embedUrl;
+      iframe.style.display = 'block';
+    }
+  }
 
   // Handle video error gracefully (fallback mock)
   video.addEventListener('error', () => {
     if (fallback) fallback.style.display = 'flex';
-    video.style.display = 'none';
   });
+
+  video.addEventListener('play', () => updatePlayBtnState(true));
+  video.addEventListener('pause', () => updatePlayBtnState(false));
 
   const observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) {
-      video.play().catch(() => {});
+      if (video.style.display !== 'none') {
+        video.play().catch(() => {});
+      }
     } else {
       video.pause();
     }
-  }, { threshold: 0.45 });
+  }, { threshold: 0.35 });
 
   observer.observe(video);
 
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  video.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+
   if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       video.muted = !video.muted;
       soundBtn.innerHTML = video.muted
         ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>`
